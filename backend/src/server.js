@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js"
+import eventRoutes from "./routes/event.route.js"
 import {connectDB} from "./lib/db.js"
 
 dotenv.config();
@@ -19,7 +20,8 @@ app.use(cors({
     credentials: true
 }));
 
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/events", eventRoutes);
 
 app.listen(PORT, () => {
     console.log("Server is running on http://localhost:"+PORT);
