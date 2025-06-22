@@ -35,14 +35,14 @@ const SignInPage: React.FC<SignInPageProps> = ({ onSwitchToSignUp }) => {
   return (
     <motion.div
       key="signin"
-      className="flex min-h-screen items-center justify-center bg-gray-50 p-4 font-sans"
+      className="flex min-h-screen w-full items-center justify-center p-4 font-sans"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
       <motion.div
-        className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg"
+        className="w-full rounded-2xl bg-white p-8 shadow-lg"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -20, opacity: 0 }}
@@ -81,11 +81,17 @@ const SignInPage: React.FC<SignInPageProps> = ({ onSwitchToSignUp }) => {
 
           <Button
             type="submit"
-            className="w-full rounded-lg bg-indigo-500 py-3 text-lg font-semibold text-white transition-colors hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full rounded-lg bg-orange-500 py-3 text-lg font-semibold text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
           >
             Sign In
           </Button>
         </form>
+
+        <div className="my-8 flex items-center">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-4 text-gray-500">OR</span>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
 
 
         <p className="text-center text-gray-600">

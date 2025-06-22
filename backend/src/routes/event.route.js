@@ -1,5 +1,5 @@
 import express from "express";
-import {today} from "../controllers/event.controller.js";
+import {today, month, day, create, details, joinEvent, deleteEvent, updateEvent, leaveEvent} from "../controllers/event.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 
 const router = express.Router();

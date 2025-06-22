@@ -1,5 +1,5 @@
-import User from "../models/User.model";
-import Event from "../models/Event.model";
+import User from "../models/User.model.js";
+import Event from "../models/Event.model.js";
 
 const getDayBounds = (year, month, day) => {
     const start = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))

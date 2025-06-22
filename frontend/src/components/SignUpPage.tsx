@@ -35,14 +35,14 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSwitchToSignIn }) => {
   return (
     <motion.div
       key="signup"
-      className="flex min-h-screen items-center justify-center bg-gray-50 p-4 font-sans"
+      className="flex min-h-screen w-full items-center justify-center p-4 font-sans"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }} 
     >
       <motion.div
-        className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg"
+        className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-lg"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -20, opacity: 0 }}
