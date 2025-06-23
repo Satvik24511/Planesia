@@ -3,9 +3,11 @@
 import React from 'react';
 import { Menu, Search } from 'lucide-react';
 
+type DashboardView = 'today' | 'calendar';
+
 interface TopBarProps {
-  onToggleView: (view: string) => void;
-  activeView: string;
+  onToggleView: (view: DashboardView) => void;
+  activeView: DashboardView;
 }
 
 export default function TopBar({ onToggleView, activeView }: TopBarProps) {

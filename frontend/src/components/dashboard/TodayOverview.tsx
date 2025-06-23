@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 import { Sun, Cloud, CloudRain, CloudSnow, Wind, Zap, Moon } from 'lucide-react';
 import Image from 'next/image';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
-const WEATHER_API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY || '83373a4f5874378e4b79bc3a718ae90c';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+const WEATHER_API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY
 
 type Event = {
     title: string;
@@ -163,7 +163,10 @@ const getWeatherIcon = (iconCode: string, isDayTime: boolean): React.ElementType
       setIsLoadingEvents(true);
       setErrorEvents(null);
       try {
-        const response = await fetch(`${API_BASE_URL}/events/today`);
+        const response = await fetch(`${API_BASE_URL}/events/today`, {
+            method: 'GET',
+            credentials: 'include'
+        });
         if (!response.ok) {
           throw new Error(`Events API error: ${response.statusText}`);
         }
@@ -238,14 +241,14 @@ const getWeatherIcon = (iconCode: string, isDayTime: boolean): React.ElementType
       </div>
 
       <div className="relative flex-1 bg-gradient-to-br from-orange-200 to-pink-200 rounded-2xl shadow-md flex flex-col justify-end items-center p-6 overflow-hidden lg:h-auto h-64">
-        <div className="absolute top-6 right-6 flex items-start space-x-3 bg-white bg-opacity-40 backdrop-blur-sm rounded-full py-2 px-4 shadow-lg">
+        <div className="absolute top-20 right-17 flex items-start space-x-3 py-2 px-4 z-10 scale-150">
           {isLoadingWeather ? (
             <span className="text-gray-700 text-xl">Loading...</span>
           ) : errorWeather ? (
             <span className="text-red-600 text-xl">{errorWeather}</span>
           ) : weatherData ? (
             <>
-              <WeatherIconComponent size={48} className="text-white drop-shadow-lg" />
+              <WeatherIconComponent size={80} className="text-white drop-shadow-lg" />
               <div>
                 <p className="text-white text-5xl font-bold leading-none drop-shadow-lg">{Math.round(weatherData.main.temp)}°c</p>
                 <p className="text-white text-lg font-medium drop-shadow-lg">{weatherData.weather[0].description}</p>
@@ -265,23 +268,6 @@ const getWeatherIcon = (iconCode: string, isDayTime: boolean): React.ElementType
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-orange-300/40 to-transparent z-10 rounded-2xl"></div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="absolute top-1/3 left-1/4 z-20"
-        >
-          <div className="w-24 h-24 bg-yellow-400 rounded-full shadow-lg" />
-        </motion.div>
-        <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.7, duration: 1 }}
-          className="absolute top-1/4 right-1/4 z-20"
-        >
-          <div className="w-24 h-16 bg-white rounded-full rounded-tl-none shadow-lg" />
-        </motion.div>
       </div>
     </div>
   );
