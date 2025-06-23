@@ -20,6 +20,7 @@ type DashboardView = 'today' | 'calendar';
 
 export default function DashboardPage() {
   const [activeView, setActiveView] = useState<DashboardView>('today');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -73,7 +74,7 @@ export default function DashboardPage() {
         className="relative z-20 w-full max-w-7xl h-[85vh] bg-white bg-opacity-70 rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col overflow-hidden"
       >
 
-        <TopBar onToggleView={toggleView} activeView={activeView} user={user}/>
+        <TopBar onSidebarToggle={setIsSidebarOpen} isSidebarOpen={isSidebarOpen} user={user}/>
 
         <div className="flex-1 mt-8 overflow-y-auto">
           {renderActiveView()}
