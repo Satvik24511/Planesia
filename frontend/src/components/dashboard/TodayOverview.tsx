@@ -9,27 +9,11 @@ import Image from 'next/image';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 const WEATHER_API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY
 
-type Event = {
-    title: string;
-    description: string;
-    date: Date;
-    owner: User;
-    location: string;
-    capacity: number;
-    ticket_price: number;
-    imageUrls: string[];
-    contact_info: string;
-    tickets_sold: number;
-    attendee_list: User[];
-}
-
 type User = {
+    _id: string; 
     name: string;
     email: string;
-    eventsOwned?: Event[];
-    eventsJoined?: Event[];
 };
-
 
 interface TodayOverviewProps {
   user: User | null;

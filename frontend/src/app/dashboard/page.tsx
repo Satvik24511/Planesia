@@ -10,25 +10,10 @@ import { PlusCircle } from 'lucide-react';
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
-type Event = {
-    title: string;
-    description: string;
-    date: Date;
-    owner: User;
-    location: string;
-    capacity: number;
-    ticket_price: number;
-    imageUrls: string[];
-    contact_info: string;
-    tickets_sold: number;
-    attendee_list: User[];
-}
-
 type User = {
+    _id: string; 
     name: string;
     email: string;
-    eventsOwned?: Event[];
-    eventsJoined?: Event[];
 };
 
 type DashboardView = 'today' | 'calendar';
@@ -88,7 +73,7 @@ export default function DashboardPage() {
         className="relative z-20 w-full max-w-7xl h-[85vh] bg-white bg-opacity-70 rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col overflow-hidden"
       >
 
-        <TopBar onToggleView={toggleView} activeView={activeView} />
+        <TopBar onToggleView={toggleView} activeView={activeView} user={user}/>
 
         <div className="flex-1 mt-8 overflow-y-auto">
           {renderActiveView()}

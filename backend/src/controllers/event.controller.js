@@ -308,3 +308,22 @@ export const leaveEvent = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 };
+
+export const getAllEvents = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const events = await Event.find({
+            $or: [
+                { owner: userId },
+                { attendee_list: userId }
+            ]
+        }).populate('owner', 'name email'); 
+
+        res.status(200).json({ success: true, events: events });
+
+    } catch (error) {
+        console.error('Error fetching all events for user:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
