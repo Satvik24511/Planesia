@@ -55,10 +55,6 @@ export const month = async (req, res) => {
                 $gte: startOfMonth,
                 $lt: endOfMonth
             },
-            $or: [
-                { owner: userId },
-                { attendee_list: userId }
-            ]
         }).populate('owner', 'name email');
 
         res.status(200).json({ success: true, events: events });
@@ -88,10 +84,6 @@ export const day = async (req, res) => {
                 $gte: start,
                 $lte: end
             },
-            $or: [
-                { owner: userId },
-                { attendee_list: userId }
-            ]
         }).populate('owner', 'name email');
 
         res.status(200).json({ success: true, events: events });
@@ -324,6 +316,38 @@ export const getAllEvents = async (req, res) => {
 
     } catch (error) {
         console.error('Error fetching all events for user:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const myEvents = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const events = await Event.find({
+            owner: userId,
+        }).populate('owner', 'name email');
+
+        res.status(200).json({ success: true, events: events });
+
+    } catch (error) {
+        console.error('Error fetching my events:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const attendingEvents = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const events = await Event.find({
+            attendee_list: userId
+        }).populate('owner', 'name email');
+
+        res.status(200).json({ success: true, events: events });
+
+    } catch (error) {
+        console.error('Error fetching attending events:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
