@@ -212,7 +212,7 @@ const getWeatherIcon = (iconCode: string, isDayTime: boolean): React.ElementType
                       <p className="text-gray-600 text-sm">{format(new Date(event.date), 'hh:mm a')}</p>
                     </div>
                   </div>
-                  <span className="text-orange-500 font-medium text-sm">View Details</span>
+                  <span className="text-orange-500 font-medium text-sm"><a href={`/dashboard/event/${event._id}`}>View Details</a></span>
                 </motion.div>
               ))}
             </div>
