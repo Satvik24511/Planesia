@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@barba/core": "^2.10.3",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.18.1",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.522.0",
     "next": "15.3.4",
     "react": "^19.0.0",

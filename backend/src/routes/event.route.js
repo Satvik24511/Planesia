@@ -9,11 +9,12 @@ router.get("/today", today);
 router.get("/month/:year/:month", month);
 router.get("/day/:year/:month/:day", day);
 router.post("/", create);
-router.get("/:id", details);
+router.get("/allEvents", getAllEvents);
 router.post("/join/:id", joinEvent);
+router.get("/:id", details);
 router.delete("/:id", deleteEvent);
 router.put("/:id", updateEvent);
-router.post("/:id/:leave", leaveEvent);
-router.get("/allEvents", getAllEvents);
+router.post("/:id/leave", leaveEvent);
+
 
 export default router;

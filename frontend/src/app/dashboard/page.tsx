@@ -6,6 +6,7 @@ import TopBar from '@/components/dashboard/TopBar';
 import TodayOverview from '@/components/dashboard/TodayOverview';
 import CalendarView from '@/components/dashboard/Calendar';
 import { PlusCircle } from 'lucide-react';
+import AddEventForm from '@/components/dashboard/AddEventForm';
 
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
@@ -21,6 +22,7 @@ type DashboardView = 'today' | 'calendar';
 export default function DashboardPage() {
   const [activeView, setActiveView] = useState<DashboardView>('today');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showAddEventForm, setShowAddEventForm] = useState(false);
 
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -47,6 +49,10 @@ export default function DashboardPage() {
   useEffect(() => {
     getUser();
   }, []);
+
+  const handleEventCreated = () => {
+    console.log('Event created successfully! Dashboard data should be refreshed.');
+  };
 
 
   const renderActiveView = () => {
@@ -81,9 +87,16 @@ export default function DashboardPage() {
         </div>
       </motion.div>
 
-      <button className="absolute bottom-8 right-8 z-50 w-16 h-16 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110">
+      <button onClick={() => setShowAddEventForm(true)} className="absolute bottom-8 right-8 z-50 w-16 h-16 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110">
         <PlusCircle size={32} />
       </button>
+
+      {showAddEventForm && (
+        <AddEventForm
+          onClose={() => setShowAddEventForm(false)} 
+          onEventCreated={handleEventCreated} 
+        />
+      )}
     </div>
   );
 }

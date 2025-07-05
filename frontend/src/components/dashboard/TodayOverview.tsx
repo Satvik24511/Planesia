@@ -5,15 +5,11 @@ import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Sun, Cloud, CloudRain, CloudSnow, Wind, Zap, Moon } from 'lucide-react';
 import Image from 'next/image';
+import type { User } from '@/types/user.type';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 const WEATHER_API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY
 
-type User = {
-    _id: string; 
-    name: string;
-    email: string;
-};
 
 interface TodayOverviewProps {
   user: User | null;
