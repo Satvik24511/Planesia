@@ -4,23 +4,18 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import TopBar from '@/components/dashboard/TopBar';
 import TodayOverview from '@/components/dashboard/TodayOverview';
-import CalendarView from '@/components/dashboard/Calendar';
+import CalendarView from '@/components/dashboard/Calendar'; 
 import { PlusCircle } from 'lucide-react';
 import AddEventForm from '@/components/dashboard/AddEventForm';
+import type { User } from '@/types/user.type';
+import type { DashboardView } from '@/types/dashboard.type';
+
 
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
-type User = {
-    _id: string; 
-    name: string;
-    email: string;
-};
-
-type DashboardView = 'today' | 'calendar';
-
 export default function DashboardPage() {
-  const [activeView, setActiveView] = useState<DashboardView>('today');
+  const [activeView, setActiveView] = useState<DashboardView>('today' as DashboardView);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showAddEventForm, setShowAddEventForm] = useState(false);
 
@@ -28,22 +23,22 @@ export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
 
   const getUser = async () => {
-  try {
-    const res = await fetch('http://localhost:5000/api/auth/me', {
-      method: 'GET',
-      credentials: 'include',
-    });
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/me', {
+        method: 'GET',
+        credentials: 'include',
+      });
 
-    if (!res.ok) {
-      router.push('/');
-    }
+      if (!res.ok) {
+        router.push('/');
+      }
 
-    const data = await res.json();
-    setUser(data.user);
-  } catch (err: any) {
-      router.push('/');
-      console.error('Failed to fetch user:', err);
-    }
+      const data = await res.json();
+      setUser(data.user);
+    } catch (err: any) {
+        router.push('/');
+        console.error('Failed to fetch user:', err);
+      }
   };
 
   useEffect(() => {
@@ -51,15 +46,15 @@ export default function DashboardPage() {
   }, []);
 
   const handleEventCreated = () => {
-    console.log('Event created successfully! Dashboard data should be refreshed.');
+    setShowAddEventForm(false);
   };
 
 
   const renderActiveView = () => {
-    if (activeView === 'today') {
+    if (activeView === 'today' as DashboardView) {
       return <TodayOverview user={user}/>;
     } else if (activeView === 'calendar') {
-      return <CalendarView user={user}/>;
+      return <CalendarView user={user}/>; 
     }
     return null;
   };
@@ -80,7 +75,7 @@ export default function DashboardPage() {
         className="relative z-20 w-full max-w-7xl h-[85vh] bg-white bg-opacity-70 rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col overflow-hidden"
       >
 
-        <TopBar onSidebarToggle={setIsSidebarOpen} isSidebarOpen={isSidebarOpen} user={user}/>
+        <TopBar onSidebarToggle={setIsSidebarOpen} isSidebarOpen={isSidebarOpen} user={user} toggleView={toggleView} activeView={activeView}/>
 
         <div className="flex-1 mt-8 overflow-y-auto">
           {renderActiveView()}
@@ -100,4 +95,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

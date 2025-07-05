@@ -1,0 +1,1 @@
+export type DashboardView = 'dashboard' | 'calendar' | 'profile' | 'settings';

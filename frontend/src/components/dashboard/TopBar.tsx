@@ -5,12 +5,8 @@ import { Menu, Search, X, User as UserIcon, Settings, LogOut, CalendarDays, Layo
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion'; 
 import { useRouter } from 'next/navigation';
-
-type User = {
-    _id: string;
-    name: string;
-    email: string;
-};
+import type { User } from '@/types/user.type';
+import type { DashboardView } from '@/types/dashboard.type';
 
 type Event = {
     _id: string;
@@ -27,15 +23,18 @@ type Event = {
     attendee_list: User[];
 }
 
-interface TopBarProps {
-    user: User | null; 
-    onSidebarToggle: (isOpen: boolean) => void; 
-    isSidebarOpen: boolean; 
+
+export interface TopBarProps {
+  onSidebarToggle: (open: boolean) => void;
+  isSidebarOpen: boolean;
+  user: User | null;
+  activeView: DashboardView; 
+  toggleView: (view: DashboardView) => void; 
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 
-export default function TopBar({ user, onSidebarToggle, isSidebarOpen }: TopBarProps) {
+export default function TopBar({ user, onSidebarToggle, isSidebarOpen, activeView, toggleView }: TopBarProps) { 
 
   const router = useRouter();
 
@@ -71,7 +70,7 @@ export default function TopBar({ user, onSidebarToggle, isSidebarOpen }: TopBarP
             console.error('Error fetching all events:', error);
             setAllEvents([]);
         }
-    }, []);
+    }, [router]); 
 
     useEffect(() => {
         fetchAllUserEvents();
@@ -94,7 +93,7 @@ export default function TopBar({ user, onSidebarToggle, isSidebarOpen }: TopBarP
                 (event.owner && event.owner.name.toLowerCase().includes(lowercasedQuery))
             );
             setFilteredEvents(results);
-            setIsSearchActive(results.length > 0);
+            setIsSearchActive(results.length > 0 || searchQuery.length > 0); 
         }, 300);
 
         return () => {
@@ -151,8 +150,8 @@ export default function TopBar({ user, onSidebarToggle, isSidebarOpen }: TopBarP
                     className="w-full pl-5 pr-12 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-300 text-lg shadow-sm"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setIsSearchActive(searchQuery.length > 0 || filteredEvents.length > 0)}
-                    onBlur={() => {setTimeout(() => !searchRef.current?.contains(document.activeElement) && setIsSearchActive(false), 100); }}
+                    onFocus={() => setIsSearchActive(true)} 
+                    onBlur={() => setTimeout(() => !searchRef.current?.contains(document.activeElement) && setIsSearchActive(false), 100)}
                 />
                 <Search size={24} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
 
@@ -194,7 +193,7 @@ export default function TopBar({ user, onSidebarToggle, isSidebarOpen }: TopBarP
             </div>
 
             <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-sm font-semibold">
-                 {user ? user.name.charAt(0).toUpperCase() : <UserIcon size={24} />}
+                    {user ? user.name.charAt(0).toUpperCase() : <UserIcon size={24} />}
             </div>
 
             <AnimatePresence>
@@ -229,21 +228,25 @@ export default function TopBar({ user, onSidebarToggle, isSidebarOpen }: TopBarP
                             </div>
 
                             <nav className="flex flex-col space-y-4 flex-1">
-                                <Link href="/dashboard" className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-100 transition-colors" onClick={() => onSidebarToggle(false)}>
+                                <button 
+                                    onClick={() => { toggleView('today' as DashboardView); onSidebarToggle(false); }}
+                                    className={`flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-100 transition-colors w-full text-left
+                                    ${activeView === 'today' as DashboardView ? 'bg-orange-100 text-orange-700 font-semibold' : ''}`}
+                                >
                                     <LayoutDashboard size={20} />
                                     <span className="font-medium">Dashboard</span>
-                                </Link>
-                                <Link href="/dashboard/calendar" className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-100 transition-colors" onClick={() => onSidebarToggle(false)}>
+                                </button>
+                                <button 
+                                    onClick={() => { toggleView('calendar'); onSidebarToggle(false); }}
+                                    className={`flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-100 transition-colors w-full text-left
+                                    ${activeView === 'calendar' ? 'bg-orange-100 text-orange-700 font-semibold' : ''}`}
+                                >
                                     <CalendarDays size={20} />
                                     <span className="font-medium">Calendar</span>
-                                </Link>
+                                </button>
                                 <Link href="/profile" className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-100 transition-colors" onClick={() => onSidebarToggle(false)}>
                                     <UserIcon size={20} />
                                     <span className="font-medium">Profile</span>
-                                </Link>
-                                <Link href="/settings" className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-100 transition-colors" onClick={() => onSidebarToggle(false)}>
-                                    <Settings size={20} />
-                                    <span className="font-medium">Settings</span>
                                 </Link>
                             </nav>
 
